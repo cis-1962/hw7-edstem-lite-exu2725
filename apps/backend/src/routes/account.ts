@@ -1,6 +1,7 @@
 import express from 'express';
 import User from '../models/user';
 import requireAuth from '../middlewares/require-auth';
+
 const router = express.Router();
 
 router.post('/signup', async (req, res) => {
@@ -9,11 +10,12 @@ router.post('/signup', async (req, res) => {
     return res.status(400).json({ error: 'Username and password are required' });
   }
   try {
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.exists({ username });
     if (existingUser) {
       return res.status(400).json({ error: 'Username already exists' });
     }
     const newUser = await User.create({ username, password });
+    req.session!.user = username;
     return res.status(201).json({ message: 'Signup successful', user: newUser });
   } catch (error) {
     console.error('Error creating user:', error);
@@ -31,7 +33,7 @@ router.post('/login', async (req, res) => {
     if (!user || user.password !== password) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    req.session.user = user.username;
+    req.session!.user = user.username;
     return res.status(200).json({ message: 'Login successful' });
   } catch (error) {
     console.error('Error finding user:', error);

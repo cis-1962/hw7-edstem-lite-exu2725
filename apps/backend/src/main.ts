@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cookieSession from 'cookie-session';
+import router from './routes/account';
+import questionRouter from './routes/questions';
 
 
 // read environment variables from .env file
@@ -14,6 +16,7 @@ mongoose.connect(URI)
 .catch((err) => console.error('Error connecting to MongoDB:', err));
 
 const PORT = process.env.PORT ?? 8000;
+const SECRET = process.env.SECRET ?? "secret";
 
 const app = express();
 
@@ -21,13 +24,21 @@ app.use(express.json());
 
 app.use(cookieSession({
   name: 'session',
-  keys: ['key1', 'key2'] // Provide an array of secret keys for signing the session cookie
+  secret: SECRET
 }));
 
 // define root route
 app.get('/api/hello', (_, res) => {
   res.json({ message: 'Hello, frontend!' });
 });
+
+app.use((req, res, next) => {
+  console.log(req.session);
+  next();
+});
+
+app.use('/api/account', router);
+app.use('/questions', questionRouter);
 
 // listen
 app.listen(PORT, () => {
