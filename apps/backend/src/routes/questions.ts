@@ -20,8 +20,13 @@ questionRouter.post('/add', requireAuth, async (req, res) => {
     return res.status(400).json({ error: 'Question text is required' });
   }
   try {
-    const newQuestion = await Question.create({ questionText, author: req.session!.user });
-    return res.status(201).json({ message: 'Question added successfully', question: newQuestion });
+    const newQuestion = await Question.create({
+      questionText,
+      author: req.session!.user,
+    });
+    return res
+      .status(201)
+      .json({ message: 'Question added successfully', question: newQuestion });
   } catch (error) {
     console.error('Error adding question:', error);
     return res.status(500).json({ error: 'Internal server error' });
@@ -40,7 +45,9 @@ questionRouter.post('/answer', requireAuth, async (req, res) => {
     }
     question.answer = answer;
     await question.save();
-    return res.status(200).json({ message: 'Answer added/updated successfully' });
+    return res
+      .status(200)
+      .json({ message: 'Answer added/updated successfully' });
   } catch (error) {
     console.error('Error adding/updating answer:', error);
     return res.status(500).json({ error: 'Internal server error' });
