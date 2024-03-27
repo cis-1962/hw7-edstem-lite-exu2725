@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { ErrorRequestHandler } from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cookieSession from 'cookie-session';
@@ -37,6 +37,12 @@ app.use((req, res, next) => {
   next();
 });
 
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  console.error('An error occurred:', err);
+  res.status(500).json({ error: 'Internal server error' });
+};
+
+app.use(errorHandler);
 app.use('/api/account', router);
 app.use('/questions', questionRouter);
 
