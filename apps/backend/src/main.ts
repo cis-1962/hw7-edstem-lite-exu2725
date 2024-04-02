@@ -8,11 +8,9 @@ import questionRouter from './routes/questions';
 // read environment variables from .env file
 dotenv.config();
 
-const URI =
-  'mongodb+srv://xueric:5oj1RadsPOahobod@hw7.aweg9fu.mongodb.net/?retryWrites=true&w=majority&appName=hw7';
-
+const URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mydb';
 mongoose
-  .connect(URI)
+  .connect(URI, {})
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('Error connecting to MongoDB:', err));
 
