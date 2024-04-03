@@ -52,6 +52,6 @@ function SignUp() {
       </p>
     </div>
   );
-};
+}
 
 export default SignUp;

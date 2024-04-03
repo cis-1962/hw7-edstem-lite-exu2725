@@ -13,6 +13,6 @@ function AppRouter() {
       </Routes>
     </BrowserRouter>
   );
-};
+}
 
 export default AppRouter;

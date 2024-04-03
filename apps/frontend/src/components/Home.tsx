@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -8,7 +10,8 @@ function Home() {
   const [questions, setQuestions] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [newQuestion, setNewQuestion] = useState('');
-  //const [newAnswer, setNewAnswer] = useState('');
+  const [newAnswer, setNewAnswer] = useState('');
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   const fetchUserSession = async () => {
     try {
@@ -54,8 +57,6 @@ function Home() {
 
   const handleAddQuestion = async () => {
     try {
-      //console.log("new Question", newQuestion)
-      console.log(newQuestion);
       await axios.post('/api/questions/add', { questionText: newQuestion });
       setModalOpen(false);
       setNewQuestion('');
@@ -66,7 +67,7 @@ function Home() {
     }
   };
 
-  /*const handleAnswerQuestion = async (questionId: string) => {
+  const handleAnswerQuestion = async (questionId: string) => {
     try {
       await axios.post('/api/questions/answer', {
         _id: questionId,
@@ -78,7 +79,14 @@ function Home() {
       console.error('Error answering question:', error);
       alert('Failed to answer question');
     }
-  };*/
+  };
+
+  const openQuestionModal = (question) => {
+    setSelectedQuestion(question);
+  };
+  const closeQuestionModal = () => {
+    setSelectedQuestion(null);
+  };
 
   return (
     <div>
@@ -115,7 +123,34 @@ function Home() {
             </div>
           )}
           <h3>Questions</h3>
-
+          <div className="question-list">
+            {questions.map((question) => (
+              <div key={question._id} onClick={() => openQuestionModal(question)}>
+                {question.questionText}
+              </div>
+            ))}
+          </div>
+          {selectedQuestion && (
+            <div className="modal">
+              <div className="modal-content">
+                <span className="close" onClick={closeQuestionModal}>
+                  &times;
+                </span>
+                <h3>{selectedQuestion.questionText}</h3>
+                <div>Author: {selectedQuestion.author}</div>
+                <div>Answer: {selectedQuestion.answer}</div>
+                <input
+                  type="text"
+                  value={newAnswer}
+                  onChange={(e) => setNewAnswer(e.target.value)}
+                  placeholder="Enter your answer"
+                />
+                <button onClick={() => handleAnswerQuestion(selectedQuestion._id)}>
+                  Submit Answer
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div className="cw-logged-out">
@@ -126,6 +161,6 @@ function Home() {
       )}
     </div>
   );
-};
+}
 
 export default Home;
