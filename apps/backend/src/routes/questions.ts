@@ -7,6 +7,7 @@ const questionRouter = express.Router();
 questionRouter.get('/', async (req, res) => {
   try {
     const questions = await Question.find();
+    //console.log(questions);
     return res.status(200).json(questions);
   } catch (error) {
     console.error('Error fetching questions:', error);

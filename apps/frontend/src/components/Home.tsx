@@ -16,7 +16,6 @@ function Home() {
       const { loggedIn, username } = response.data;
       setLoggedIn(loggedIn);
       setUsername(username);
-      console.log(loggedIn, username, questions);
     } catch (error) {
       console.error('Error fetching user session:', error);
       alert('Error fetching user session');
@@ -26,7 +25,9 @@ function Home() {
   const fetchQuestions = async () => {
     try {
       const response = await axios.get('/api/questions');
+      console.log(response.data);
       setQuestions(response.data);
+      console.log(questions);
     } catch (error) {
       console.error('Error fetching questions:', error);
       alert('Error fetching questions');
