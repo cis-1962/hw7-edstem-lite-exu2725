@@ -9,9 +9,7 @@ import questionRouter from './routes/questions';
 // read environment variables from .env file
 dotenv.config();
 
-//console.log(process.env.MONGODB_URI);
-
-const URI = process.env.MONGODB_URI || 'mongodb://xueric:m1Ke0AV5RBSJbjbC@ac-excenrp-shard-00-00.aweg9fu.mongodb.net:27017,ac-excenrp-shard-00-01.aweg9fu.mongodb.net:27017,ac-excenrp-shard-00-02.aweg9fu.mongodb.net:27017/?ssl=true&replicaSet=atlas-tkn5q2-shard-0&authSource=admin&retryWrites=true&w=majority&appName=hw7';
+const URI = process.env.MONGODB_URI || 'default';
 mongoose
   .connect(URI, {})
   .then(() => console.log('Connected to MongoDB'))

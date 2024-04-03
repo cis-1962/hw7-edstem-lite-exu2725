@@ -15,7 +15,7 @@ questionRouter.get('/', async (req, res) => {
   }
 });
 
-questionRouter.post('/add', /*requireAuth,*/ async (req, res) => {
+questionRouter.post('/add', requireAuth, async (req, res) => {
   const { questionText } = req.body;
   if (!questionText) {
     return res.status(400).json({ error: 'Question text is required' });
