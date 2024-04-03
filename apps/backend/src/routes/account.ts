@@ -4,6 +4,27 @@ import requireAuth from '../middlewares/require-auth';
 
 const router = express.Router();
 
+router.get('/', async (req, res) => {
+  try {
+    if (
+      req.session &&
+      req.session.user !== undefined &&
+      req.session.user.trim() !== ''
+    ) {
+      const user = await User.findOne({ username: req.session.user });
+      if (user) {
+        return res
+          .status(200)
+          .json({ loggedIn: true, username: user.username });
+      }
+    }
+    return res.status(200).json({ loggedIn: false, username: null });
+  } catch (error) {
+    console.error('Error checking user session:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 router.post('/signup', async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {

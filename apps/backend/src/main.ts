@@ -1,4 +1,5 @@
 import express, { ErrorRequestHandler } from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cookieSession from 'cookie-session';
@@ -8,11 +9,13 @@ import questionRouter from './routes/questions';
 // read environment variables from .env file
 dotenv.config();
 
-const URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mydb';
+//console.log(process.env.MONGODB_URI);
+
+const URI = process.env.MONGODB_URI || 'mongodb://xueric:m1Ke0AV5RBSJbjbC@ac-excenrp-shard-00-00.aweg9fu.mongodb.net:27017,ac-excenrp-shard-00-01.aweg9fu.mongodb.net:27017,ac-excenrp-shard-00-02.aweg9fu.mongodb.net:27017/?ssl=true&replicaSet=atlas-tkn5q2-shard-0&authSource=admin&retryWrites=true&w=majority&appName=hw7';
 mongoose
   .connect(URI, {})
   .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('Error connecting to MongoDB:', err));
+  .catch((err) => console.error('Error connecting to MongoDB:', URI, err));
 
 const PORT = process.env.PORT ?? 8000;
 const SECRET = process.env.SECRET ?? 'secret';
@@ -20,6 +23,9 @@ const SECRET = process.env.SECRET ?? 'secret';
 const app = express();
 
 app.use(express.json());
+
+app.use(cors());
+
 
 app.use(
   cookieSession({
@@ -34,7 +40,7 @@ app.get('/api/hello', (_, res) => {
 });
 
 app.use((req, res, next) => {
-  console.log(req.session);
+  //console.log(req.session);
   next();
 });
 
@@ -45,7 +51,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
 app.use(errorHandler);
 app.use('/api/account', router);
-app.use('/questions', questionRouter);
+app.use('/api/questions', questionRouter);
 
 // listen
 app.listen(PORT, () => {

@@ -20,6 +20,7 @@ questionRouter.post('/add', requireAuth, async (req, res) => {
     return res.status(400).json({ error: 'Question text is required' });
   }
   try {
+    //console.log("Here!!!!")
     const newQuestion = await Question.create({
       questionText,
       author: req.session!.user,
