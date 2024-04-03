@@ -28,9 +28,7 @@ function Home() {
   const fetchQuestions = async () => {
     try {
       const response = await axios.get('/api/questions');
-      console.log(response.data);
       setQuestions(response.data);
-      console.log(questions);
     } catch (error) {
       console.error('Error fetching questions:', error);
       alert('Error fetching questions');
@@ -112,8 +110,8 @@ function Home() {
                   &times;
                 </span>
                 <h3>Add New Question</h3>
-                <input
-                  type="text"
+                <textarea
+                  className="answer-input"
                   value={newQuestion}
                   onChange={(e) => setNewQuestion(e.target.value)}
                   placeholder="Enter your question"
@@ -122,10 +120,11 @@ function Home() {
               </div>
             </div>
           )}
-          <h3>Questions</h3>
+          <div className = "container">
           <div className="question-list">
+            <h3>Questions</h3>
             {questions.map((question) => (
-              <div key={question._id} onClick={() => openQuestionModal(question)}>
+              <div key={question._id} className = "question-card" onClick={() => openQuestionModal(question)}>
                 {question.questionText}
               </div>
             ))}
@@ -136,21 +135,22 @@ function Home() {
                 <span className="close" onClick={closeQuestionModal}>
                   &times;
                 </span>
-                <h3>{selectedQuestion.questionText}</h3>
+                <h3 className = "question-text">{selectedQuestion.questionText}</h3>
                 <div>Author: {selectedQuestion.author}</div>
-                <div>Answer: {selectedQuestion.answer}</div>
-                <input
-                  type="text"
+                <div className = "question-text">Answer: {selectedQuestion.answer}</div>
+                <textarea
+                  className="answer-input"
                   value={newAnswer}
                   onChange={(e) => setNewAnswer(e.target.value)}
                   placeholder="Enter your answer"
                 />
-                <button onClick={() => handleAnswerQuestion(selectedQuestion._id)}>
+                <button className = "bottom" onClick={() => handleAnswerQuestion(selectedQuestion._id)}>
                   Submit Answer
                 </button>
               </div>
             </div>
           )}
+          </div>
         </div>
       ) : (
         <div className="cw-logged-out">
