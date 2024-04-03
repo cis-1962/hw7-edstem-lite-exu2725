@@ -120,36 +120,47 @@ function Home() {
               </div>
             </div>
           )}
-          <div className = "container">
-          <div className="question-list">
-            <h3>Questions</h3>
-            {questions.map((question) => (
-              <div key={question._id} className = "question-card" onClick={() => openQuestionModal(question)}>
-                {question.questionText}
-              </div>
-            ))}
-          </div>
-          {selectedQuestion && (
-            <div className="modal">
-              <div className="modal-content">
-                <span className="close" onClick={closeQuestionModal}>
-                  &times;
-                </span>
-                <h3 className = "question-text">{selectedQuestion.questionText}</h3>
-                <div>Author: {selectedQuestion.author}</div>
-                <div className = "question-text">Answer: {selectedQuestion.answer}</div>
-                <textarea
-                  className="answer-input"
-                  value={newAnswer}
-                  onChange={(e) => setNewAnswer(e.target.value)}
-                  placeholder="Enter your answer"
-                />
-                <button className = "bottom" onClick={() => handleAnswerQuestion(selectedQuestion._id)}>
-                  Submit Answer
-                </button>
-              </div>
+          <div className="container">
+            <div className="question-list">
+              <h3>Questions</h3>
+              {questions.map((question) => (
+                <div
+                  key={question._id}
+                  className="question-card"
+                  onClick={() => openQuestionModal(question)}
+                >
+                  {question.questionText}
+                </div>
+              ))}
             </div>
-          )}
+            {selectedQuestion && (
+              <div className="modal">
+                <div className="modal-content">
+                  <span className="close" onClick={closeQuestionModal}>
+                    &times;
+                  </span>
+                  <h3 className="question-text">
+                    {selectedQuestion.questionText}
+                  </h3>
+                  <div>Author: {selectedQuestion.author}</div>
+                  <div className="question-text">
+                    Answer: {selectedQuestion.answer}
+                  </div>
+                  <textarea
+                    className="answer-input"
+                    value={newAnswer}
+                    onChange={(e) => setNewAnswer(e.target.value)}
+                    placeholder="Enter your answer"
+                  />
+                  <button
+                    className="bottom"
+                    onClick={() => handleAnswerQuestion(selectedQuestion._id)}
+                  >
+                    Submit Answer
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ) : (
