@@ -55,7 +55,8 @@ function Home() {
   const handleAddQuestion = async () => {
     try {
       //console.log("new Question", newQuestion)
-      await axios.post('http://localhost:8000/api/questions/add', { newQuestion });
+      console.log(newQuestion);
+      await axios.post('/api/questions/add', { questionText: newQuestion });
       setModalOpen(false);
       setNewQuestion('');
       fetchQuestions();
